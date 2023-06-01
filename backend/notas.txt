@@ -1,0 +1,71 @@
+consegui fazer aparecer o nome do livro que o leitor estava lendo usando o autopopulate com o codigo dessa
+forma aqui: 
+const autopopulate = require('mongoose-autopopulate');
+const mongoose = require ('mongoose'); 
+const LivrosSchema = require('./schemas/livrosSchema');
+const Schema = mongoose.Schema; 
+
+const LeitorSchema = new Schema({
+    idLeitor: Number,
+    nomeLeitor: { type: String, required: [true, "nome do leitor obrigatório"] },
+    idade: Number,
+    livro: { type: mongoose.Schema.Types.ObjectId, ref: 'livros', autopopulate: { select: 'titulo' } } 
+    // livros: [LivrosSchema, ref = 'titulo']//traz um array vazio 
+  });
+  LeitorSchema.plugin(require('mongoose-autopopulate'));
+  const LeitorModel = mongoose.model('leitores', LeitorSchema);
+  
+  module.exports = LeitorModel;
+
+  MASSSSSSSSSSSSSS 
+
+  o atualizar parou de funcionar, eu voltei que era como estava funcionando antes mas salvei aqui, nao consegui 
+  pesquisar muito mais sobre o autopopulate. até então a resposta vem em array tipo 
+  {
+    ...
+    "livros": Array
+  }
+nao traz o nome do livro !!!!!!! :|| 
+
+
+MODELO JSON PARA LEITORES: 
+{
+    "idLeitor": 1 ,
+    "nomeLeitor": "Maria",
+    "idade": 19,
+    "livro": "Jotinha"
+}
+
+caminho da url:  http://localhost:5000/leitores/
+
+MODELO PARA LIVROS: 
+
+{
+   "idLivro": 1,
+  "titulo": "Maracujá Faz Bem",
+  "npaginas": 520,
+  "editora": "Galera"
+}
+
+caminho da url: http://localhost:5000/livros/ 
+
+--
+antes de começar a rodar o projeto com > node srv.js 
+baixar as dependencias! 
+> npm install nodemon e npm install -g nodemon
+> npm install mongoose  
+> npm install mongodb   
+> npm install           
+> npm install express  
+> npm install mongoose-autopopulate
+> express -view ejs     
+
+varias ai eu vi na aula do prof e dei antes de inciar o projeto ai coloquei kklk
+
+TA TUDO FUNCIONANDO! só nao ta aparecendo o nome do livro, vou deixar salvo esse arquivo no meu git para a gente clona
+se quiserem> tentem fazer  mais uma entidade do tipo BIBILIOTECA com nomebib, idbib  e diretora seguindo a mesma ideia e 
+liga e com o livro futuquem bem para tentar entender e n se preocupa com nao rodar porque eu to cm ele no git se der certo esse tipo BIBILIOTECA
+vai ser melhor pra gente, nao precisa tambem fazer outro crud inteiro mas é bom pra aprender. 
+
+qualquer coisa vem de zap 
+
