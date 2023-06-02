@@ -18,3 +18,18 @@ npm install mongoose
 npm install mongodb
 node srv.js 
 
+{
+  "_id": 1,
+  "autor": "mario",
+  "titulo": "rainha",
+  "leitor": maria,
+  "npaginas": 123,
+  "editora": "editora"
+}
+
+
+cors configurar e instalar 
+
+backend npm install cors 
+
+
