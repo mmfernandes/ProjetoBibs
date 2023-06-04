@@ -1,7 +1,8 @@
-
+const cors = require("cors");
 
 const express = require('express');
 const srv = express();
+servidor.use(cors());
 srv.use(express.json());
 require('./db/mongo');
 
