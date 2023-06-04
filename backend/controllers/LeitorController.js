@@ -20,7 +20,6 @@ class LeitorController{
       async salvar(req, res) {         
         const leitor = req.body;
         const idLivro = leitor.livro;
-    
         //Vincula
         if (idLivro != null && idLivro != 'undefined' && idLivro != ''){
           leitor.livro = await LivroModel.findOne({'_id': idLivro});

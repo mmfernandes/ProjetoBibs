@@ -1,9 +1,9 @@
-const cors = require("cors");
-
+const cors = require('cors')
 const express = require('express');
 const srv = express();
-servidor.use(cors());
 srv.use(express.json());
+srv.use(cors())
+
 require('./db/mongo');
 
 
@@ -18,4 +18,5 @@ srv.listen(3005,
     console.log('Servidor rodando na porta 3005! http://localhost:3005');
 }
 );
+
 

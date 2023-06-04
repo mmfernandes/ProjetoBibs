@@ -30,6 +30,7 @@ class LivroController {
         if (livroExistente) {
         // Livro já existe, retornar mensagem de erro
          return res.status(409).json({ error: 'Livro com o mesmo ID já existe.' });
+         
   }
       }
 
