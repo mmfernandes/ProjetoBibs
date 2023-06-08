@@ -4,7 +4,7 @@
     _id: { type: Number, required: true, default: -1 },
     nomeLeitor : { type: String, required : [true, "Nome é obrigatório!"] },
     idadeLeitor:  { type: Number, required:[true, "Idade é obrigatório"] },
-    livro : { type: Number, ref: 'livro' }
+    livro : [{ type: Number, ref: 'livro' }]
     
   }, { 
     versionKey: false 

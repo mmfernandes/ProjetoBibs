@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
     titulo: {type: String, required: [true, "nome é obrigatório"]},
     npaginas: { type: Number, required: true },
     editora: { type: String, required: true },
-    leitor: {type: Number, ref: 'leitor'},
+    // leitor: [{type: Number, ref: 'leitor'}],
     
   }, { 
     versionKey: false 

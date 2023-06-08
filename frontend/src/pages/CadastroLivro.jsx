@@ -1,134 +1,135 @@
-import "./cadastroLivro.css"; 
+import "./cadastroLivro.css";
 import axios from "axios";
-import Aside from "../layout/Aside"; 
-import {useState, useEffect } from "react"
-import Select from "react-select"
+// import Aside from "../layout/Aside";
+import { useState, useEffect } from "react";
+// import Select from "react-select";
 
+//select chips
 const selectStyles = {
-    control: (baseStyles, state) => ({
-      ...baseStyles,
-      margin: 0,
-      padding: "5px 0",
-      borderRadius: 3,
-      borderColor: "gray",
-      boxShadow: state.isFocused ? "0 0 0 2px black" : 0,
-      ":hover": { borderColor: "black" },
-    }),
-  };
+  control: (baseStyles, state) => ({
+    ...baseStyles,
+    margin: 0,
+    padding: "5px 0",
+    borderRadius: 3,
+    borderColor: "gray",
+    boxShadow: state.isFocused ? "0 0 0 2px black" : 0,
+    ":hover": { borderColor: "black" },
+  }),
+};
 
-function CadastroLivro(){
-const [leitores, setLeitores] = useState([]);
-const [leitoresSelecionados, setLivrosSelecionados] = useState();
-const [livro, setLivro] = useState(null);
-const [livros, setLivros] = useState([]);
+//#region crud
+function CadastroLivro() {
+  const [leitores, setLeitores] = useState([]);
+  const [leitoresSelecionados, setLivrosSelecionados] = useState();
+  const [livro, setLivro] = useState(null);
+  const [livros, setLivros] = useState([]);
 
-function getLivros(){
-
-axios.get("http://localhost:3005/livros").then((resposta) =>
-     { 
-        setLivros(resposta.data);
-      });
-}
-
-function getLeitores(){
-    axios.get("http://localhost:3005/leitores").then((resposta) => {
-        setLeitores(resposta.data);
-      });
-}
-
-useEffect(() => {
-     getLivros();
-     getLeitores();
-    //  buscar dados, atualizar o estado, entre outras ações
-    // chamando as funções async.
-    // [] como o segundo argumento indicando que esse efeito deve ser executado apenas uma vez, após a montagem inicial do componente. 
-}, [])
-
-
-function novoLivro(){
-    setLivro({
-        // _id:"",
-        autor: "", 
-        titulo: "",
-        leitor: [],
-        npaginas: "",
-        editora: "",
-    })
-}
-
-function alterarLivro(campo, valor, id){
-    livro[campo] = valor; 
-    setLivro({
-        _id: id,
-        ...livro,
-    }); 
-}
-
-function excluirLivro(id){
-    axios.delete("http://localhost:3005/livros/" + id).then(() => {
-        reiniciarEstadoDosObjetos(); 
-    }); 
-}
-
-function salvarLivro() {
-    if(livro._id) {
-        axios.put("http://localhost:3005/livros/" + livro._id, livro).then(() => { reiniciarEstadoDosObjetos();
-         });
-    }else{
-        axios.post("http://localhost:3005/livros/", livro).then(() => {
-            reiniciarEstadoDosObjetos();
-        })
-    }
-}
-
-function getSelectLeitores() {
-    if (livro !== null) {
-      const vetLeitores = [];
-      const leitoresAntes = [];
-  
-      for (let i = 0; i < leitores.length; i++) {
-        const leitor = leitores[i];
-        if (livro.leitores && livro.leitores.includes(leitor._id)) {
-          leitoresAntes[i] = {
-            value: leitor._id,
-            label: leitor.nomeLeitor,
-          };
-        }
-  
-        vetLeitores[i] = {
-          value: leitor._id,
-          label: leitor.nomeLeitor,
-        };
-      }
-  
-      return (
-        <Select
-          isMulti
-          isClearable={false}
-          value={leitoresSelecionados}
-          defaultValue={leitoresAntes}
-          onChange={onChangeSelectLeitores}
-          options={vetLeitores}
-          styles={selectStyles}
-        />
-      );
-    }
-  
-    return null;
+  //endpoint livros
+  function getLivros() {
+    axios.get("http://localhost:3005/livros").then((resposta) => {
+      setLivros(resposta.data);
+    });
   }
   
+  //endpoint leitores
+  // function getLeitores() {
+  //   axios.get("http://localhost:3005/leitores").then((resposta) => {
+  //     setLeitores(resposta.data);
+  //   });
+  // }
 
-function onChangeSelectLeitores(valores){
+  useEffect(() => {
+    getLivros();
+    // getLeitores();
+    //  buscar dados, atualizar o estado, entre outras ações
+    // chamando as funções async.
+    // [] como o segundo argumento indicando que esse efeito deve ser executado apenas uma vez, após a montagem inicial do componente.
+  }, []);
 
-    setLivrosSelecionados(valores); 
-    const leitoresIds = []; 
-    for(let i = 0; i < valores.length; i++){
-        leitoresIds[i] = valores[i].value; 
+  function novoLivro() {
+    setLivro({
+      // _id:"",
+      autor: "",
+      titulo: "",
+      // leitor: [],
+      npaginas: "",
+      editora: "",
+    });
+  }
+
+  function alterarLivro(campo, valor, id) {
+    livro[campo] = valor;
+    setLivro({
+      _id: id,
+      ...livro,
+    });
+  }
+
+  function excluirLivro(id) {
+    axios.delete("http://localhost:3005/livros/" + id).then(() => {
+      reiniciarEstadoDosObjetos();
+    });
+  }
+
+  function salvarLivro() {
+    if (livro._id) {
+      axios.put("http://localhost:3005/livros/" + livro._id, livro).then(() => {
+        reiniciarEstadoDosObjetos();
+      });
+    } else {
+      axios.post("http://localhost:3005/livros/", livro).then(() => {
+        reiniciarEstadoDosObjetos();
+      });
     }
-    alterarLivro("leitores", leitoresIds, livro._id);
-}
+  }
+  //#endregion 
+  
+  // function getSelectLeitores() {
+  //   if (livro !== null) {
+  //     const vetLeitores = [];
+  //     const leitoresAntes = [];
 
-function getFormulario() {
+  //     for (let i = 0; i < leitores.length; i++) {
+  //       const leitor = leitores[i];
+  //       if (livro.leitores && livro.leitores.includes(leitor._id)) {
+  //         leitoresAntes[i] = {
+  //           value: leitor._id,
+  //           label: leitor.nomeLeitor,
+  //         };
+  //       }
+
+  //       vetLeitores[i] = {
+  //         value: leitor._id,
+  //         label: leitor.nomeLeitor,
+  //       };
+  //     }
+
+  //     return (
+  //       <Select
+  //         isMulti
+  //         isClearable={false}
+  //         value={leitoresSelecionados}
+  //         defaultValue={leitoresAntes}
+  //         onChange={onChangeSelectLeitores}
+  //         options={vetLeitores}
+  //         styles={selectStyles}
+  //       />
+  //     );
+  //   }
+
+  //   return null;
+  // }
+
+  // function onChangeSelectLeitores(valores) {
+  //   setLivrosSelecionados(valores);
+  //   const leitoresIds = [];
+  //   for (let i = 0; i < valores.length; i++) {
+  //     leitoresIds[i] = valores[i].value;
+  //   }
+  //   alterarLivro("leitores", leitoresIds, livro._id);
+  // }
+
+  function getFormulario() {
     return (
       <form>
         <label>Autor</label>
@@ -149,8 +150,8 @@ function getFormulario() {
             alterarLivro(e.target.name, e.target.value, livro._id);
           }}
         />
-        <label>Leitor</label>
-        {getSelectLeitores()}
+        {/* <label>Leitor</label>
+        {getSelectLeitores()} */}
         <label>Páginas</label>
         <input
           type="number"
@@ -169,30 +170,51 @@ function getFormulario() {
             alterarLivro(e.target.name, e.target.value, livro._id);
           }}
         />
-        <button id="butao" type="button" onClick={() => 
-        { salvarLivro(); }}
-        > Salvar livro </button>
+        <button
+          id="butao"
+          type="button"
+          onClick={() => {
+            salvarLivro();
+          }}
+        >
+          {" "}
+          Salvar livro{" "}
+        </button>
 
-        <button id="butaoCancela"
+        <button
+          id="butaoCancela"
           type="button"
           onClick={() => {
             reiniciarEstadoDosObjetos();
           }}
-        >Cancelar</button>
+        >
+          Cancelar
+        </button>
       </form>
     );
   }
 
-
   //geração da tabela
   function getLinhaDaTabela(livro) {
     return (
-      <tr id
-      tr key={livro._id}>
+      <tr id tr key={livro._id}>
         <td id="thtd">{livro._id}</td>
+        <td id="thtd">{livro.autor}</td>
         <td id="thtd">{livro.titulo}</td>
+        <td id="thtd">{livro.npaginas}</td>
+        <td id="thtd">{livro.editora}</td>
         <td id="thtd">
-          <button id="butaoCancela"
+          <button
+            id="butaoEdita"
+            type="button"
+            onClick={() => {
+              setLivro(livro);
+            }}
+          >
+            Editar
+          </button>
+          <button
+            id="butaoCancela"
             type="button"
             onClick={() => {
               if (
@@ -205,14 +227,6 @@ function getFormulario() {
             }}
           >
             Deletar
-          </button>
-          <button id="butaoEdita"
-            type="button"
-            onClick={() => {
-              setLivro(livro);
-            }}
-          >
-            Editar
           </button>
         </td>
       </tr>
@@ -228,14 +242,16 @@ function getFormulario() {
     return linhasDaTabela;
   }
 
-
   function getTabela() {
     return (
       <table className="cadastrarLivro">
         <tbody>
           <tr>
             <th>ID</th>
+            <th>Autor</th>
             <th>Titulo</th>
+            <th>Páginas</th>
+            <th>Editora</th>
             <th>O que deseja fazer?</th>
           </tr>
           {getLinhasDaTabela()}
@@ -248,7 +264,8 @@ function getFormulario() {
     if (livro == null) {
       return (
         <>
-          <button id="butaoNovo"
+          <button
+            id="butaoNovo"
             type="button"
             onClick={() => {
               novoLivro();
@@ -266,23 +283,16 @@ function getFormulario() {
 
   return (
     <div className="cadastroLivro">
-      <Aside />
-      <div className="conteudo">
-        <h2>Cadastro de livros</h2>
-        {getConteudo()}
-      </div>
+      {/* <Aside /> */}
+      <div className="conteudo">{getConteudo()}</div>
     </div>
   );
 
-function reiniciarEstadoDosObjetos() {
+  function reiniciarEstadoDosObjetos() {
     setLivro(null);
     getLivros();
-    // setLeitorSelecionado(); 
+    // setLeitorSelecionado();
   }
-
-}//FIM FUNCAO
+} //FIM FUNCAO
 
 export default CadastroLivro;
-
-
-
