@@ -5,10 +5,10 @@ function Aside() {
     <aside className="menu-lateral">
       <ul>
         <li>
-          <NavLink to="/cadastroLivro">Livros</NavLink>
+          <NavLink to="/CadastroLivro">Livros</NavLink>
         </li>
         <li>
-          <NavLink to="/leitores">Leitores</NavLink>
+          <NavLink to="/CadastroLeitor">Leitores</NavLink>
         </li>
       </ul>
     </aside>
