@@ -9,12 +9,3 @@ router.delete('/:id', LeitorController.excluirLeitor);//
 router.get('/:id', LeitorController.buscarPorId); //
 
 module.exports = router; 
-
-
-// modelo json
-// {
-//     "idLeitor": 6,
-//       "nomeLeitor": "Fatima",
-//       "idade": 19,
-//     "livro": "Livro A"
-//     }

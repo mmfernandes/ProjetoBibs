@@ -51,37 +51,6 @@
   }
   
   
-  /* MENU LATERAL */
-  main > div > aside {
-    margin-right: 30px;
-  }
-  
-  main > div > aside > ul {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  main > div > aside > ul > li {
-    width: 150px;
-    background-color: #ede2a9;
-    margin: 1px;
-  }
-  
-  main > div > aside > ul > li > a {
-    font-size: 10pt;
-    text-align: left;
-    padding-left: 20px;
-  }
-  
-  main > div > aside > ul > li > a:hover {
-    color: #2a95f3;
-  }
-  
-  main > div > aside > ul > li > a.active {
-    color: #ffffff;
-    background-color: #dec85c;
-  }
-  
   /* FORMULÁRIO */
   form > * {
     display: block;

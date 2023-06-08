@@ -47,7 +47,7 @@ footer {
 }
 
 #root > * {
-  background: linear-gradient(to bottom, #6F00FF, #9932CC);
+  background: linear-gradient(to bottom, #d3cbde, #d2c2da);
   background-repeat: no-repeat;
   background-attachment: fixed;
 }

@@ -10,12 +10,3 @@ router.put('/:id', LivroController.atualizarLivro);//atualizando :))
 router.delete('/:id', LivroController.excluirLivro);//deletando
 
 module.exports = router; 
-
-//modelo json
-// {
-//     "idLivro": 3,
-//    "titulo": "Jotinha",
-//    "npaginas": 50,
-//    "editora": "TTT"
-//  }
- 

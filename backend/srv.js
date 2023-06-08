@@ -13,6 +13,9 @@ srv.use('/livros', livroRouter);
 const leitorRouter = require('./router/leitorRouter')
 srv.use('/leitores', leitorRouter);
 
+const autorRouter = require('./router/autorRouter')
+srv.use('/autor', autorRouter);
+
 srv.listen(3005, 
     function() {
     console.log('Servidor rodando na porta 3005! http://localhost:3005');
