@@ -1,7 +1,6 @@
 const LivroModel = require('../models/LivroModel').LivroModel;
 
 class LivroController {
-
     async listarLivros(req, res) {
         const listaLivros = await LivroModel.find({})
         res.status(200).json(listaLivros);
@@ -58,25 +57,3 @@ class LivroController {
 
 }
 module.exports = new LivroController(); 
-
-
-// async salvar(req, res) {         
-//     // #swagger.tags = ['Cursos']   
-//     const curso = req.body;
-//     const idDaDcn = curso.dcn;
-//     const idsDasDisciplinas = curso.disciplinas;
-
-//     //Vincula a dcn ao curso
-//     if (idDaDcn != null && idDaDcn != 'undefined' && idDaDcn != ''){
-//       curso.dcn = await DcnModel.findOne({'_id': idDaDcn});
-//     }
-
-//     //Vincula as disciplinas ao curso
-//     if (idsDasDisciplinas != null && idsDasDisciplinas != 'undefined' 
-//         && idsDasDisciplinas != '' && idsDasDisciplinas.length > 0){
-//       curso.disciplinas = await DisciplinaModel.find({'_id': {$in: idsDasDisciplinas}});
-//     }
-
-//     const resultado = await CursoModel.create(curso);
-//     res.json(resultado);
-//   }

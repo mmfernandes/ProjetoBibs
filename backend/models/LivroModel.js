@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
     titulo: {type: String, required: [true, "nome é obrigatório"]},
     npaginas: { type: Number, required: true },
     editora: { type: String, required: true },
-    // leitor: [{type: Number, ref: 'leitor'}],
     
   }, { 
     versionKey: false 
@@ -14,13 +13,10 @@ const mongoose = require('mongoose');
 
   LivroSchema.pre('save', async function(next){
     if (this._id < 1){
-      const Model = mongoose.model('livros', LivroSchema);
+      const Model = mongoose.model('livro', LivroSchema);
       const objMaxId = await Model.findOne().sort({'_id': -1});
       this._id = objMaxId == null ? 1 : objMaxId._id + 1;
     }
-    //else{
-    //   return(400).send('erro');
-    // }
     next();
   });
 

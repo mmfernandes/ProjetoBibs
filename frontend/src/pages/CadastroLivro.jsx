@@ -1,8 +1,6 @@
 import "./cadastroLivro.css";
 import axios from "axios";
-// import Aside from "../layout/Aside";
 import { useState, useEffect } from "react";
-// import Select from "react-select";
 
 //select chips
 const selectStyles = {
@@ -17,7 +15,6 @@ const selectStyles = {
   }),
 };
 
-//#region crud
 function CadastroLivro() {
   const [leitores, setLeitores] = useState([]);
   const [leitoresSelecionados, setLivrosSelecionados] = useState();
@@ -30,17 +27,9 @@ function CadastroLivro() {
       setLivros(resposta.data);
     });
   }
-  
-  //endpoint leitores
-  // function getLeitores() {
-  //   axios.get("http://localhost:3005/leitores").then((resposta) => {
-  //     setLeitores(resposta.data);
-  //   });
-  // }
 
   useEffect(() => {
     getLivros();
-    // getLeitores();
     //  buscar dados, atualizar o estado, entre outras ações
     // chamando as funções async.
     // [] como o segundo argumento indicando que esse efeito deve ser executado apenas uma vez, após a montagem inicial do componente.
@@ -48,10 +37,8 @@ function CadastroLivro() {
 
   function novoLivro() {
     setLivro({
-      // _id:"",
       autor: "",
       titulo: "",
-      // leitor: [],
       npaginas: "",
       editora: "",
     });
@@ -82,52 +69,6 @@ function CadastroLivro() {
       });
     }
   }
-  //#endregion 
-  
-  // function getSelectLeitores() {
-  //   if (livro !== null) {
-  //     const vetLeitores = [];
-  //     const leitoresAntes = [];
-
-  //     for (let i = 0; i < leitores.length; i++) {
-  //       const leitor = leitores[i];
-  //       if (livro.leitores && livro.leitores.includes(leitor._id)) {
-  //         leitoresAntes[i] = {
-  //           value: leitor._id,
-  //           label: leitor.nomeLeitor,
-  //         };
-  //       }
-
-  //       vetLeitores[i] = {
-  //         value: leitor._id,
-  //         label: leitor.nomeLeitor,
-  //       };
-  //     }
-
-  //     return (
-  //       <Select
-  //         isMulti
-  //         isClearable={false}
-  //         value={leitoresSelecionados}
-  //         defaultValue={leitoresAntes}
-  //         onChange={onChangeSelectLeitores}
-  //         options={vetLeitores}
-  //         styles={selectStyles}
-  //       />
-  //     );
-  //   }
-
-  //   return null;
-  // }
-
-  // function onChangeSelectLeitores(valores) {
-  //   setLivrosSelecionados(valores);
-  //   const leitoresIds = [];
-  //   for (let i = 0; i < valores.length; i++) {
-  //     leitoresIds[i] = valores[i].value;
-  //   }
-  //   alterarLivro("leitores", leitoresIds, livro._id);
-  // }
 
   function getFormulario() {
     return (
@@ -150,8 +91,6 @@ function CadastroLivro() {
             alterarLivro(e.target.name, e.target.value, livro._id);
           }}
         />
-        {/* <label>Leitor</label>
-        {getSelectLeitores()} */}
         <label>Páginas</label>
         <input
           type="number"
@@ -180,7 +119,6 @@ function CadastroLivro() {
           {" "}
           Salvar livro{" "}
         </button>
-
         <button
           id="butaoCancela"
           type="button"
@@ -283,7 +221,6 @@ function CadastroLivro() {
 
   return (
     <div className="cadastroLivro">
-      {/* <Aside /> */}
       <div className="conteudo">{getConteudo()}</div>
     </div>
   );
@@ -291,8 +228,7 @@ function CadastroLivro() {
   function reiniciarEstadoDosObjetos() {
     setLivro(null);
     getLivros();
-    // setLeitorSelecionado();
   }
-} //FIM FUNCAO
+}
 
 export default CadastroLivro;

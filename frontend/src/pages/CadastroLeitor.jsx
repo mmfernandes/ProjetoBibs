@@ -1,262 +1,270 @@
 import "./CadastroLivro";
 import axios from "axios";
-import Aside from "../layout/Aside";
-import { useState, useEffect } from "react"
-import Select from "react-select"
+import { useState, useEffect } from "react";
+import Select from "react-select";
 
 const selectStyles = {
-    control: (baseStyles, state) => ({
-        ...baseStyles,
-        margin: 0,
-        padding: "5px 0",
-        borderRadius: 3,
-        borderColor: "gray",
-        boxShadow: state.isFocused ? "0 0 0 2px black" : 0,
-        ":hover": { borderColor: "black" },
-    }),
+  control: (provied, state) => ({
+    ...provied,
+    margin: 0,
+    padding: "5px 0",
+    borderRadius: 3,
+    borderColor: "gray",
+    boxShadow: state.isFocused ? "0 0 0 2px black" : 0,
+    ":hover": { borderColor: "black" },
+  }),
 };
 
 function CadastroLeitor() {
+  const [livros, setLivros] = useState([]);
+  const [livrosSelecionados, setLivrosSelecionados] = useState();
+  const [leitor, setLeitor] = useState(null);
+  const [leitores, setLeitores] = useState([]);
 
-    const [livros, setLivros] = useState([]);
-    const [livrosSelecionados, setLivrosSelecionados] = useState();
-    const [leitor, setLeitor] = useState(null);
-    const [leitores, setLeitores] = useState([]);
+  function getLeitores() {
+    axios.get("http://localhost:3005/leitores").then((resposta) => {
+      setLeitores(resposta.data);
+    });
+  }
 
-    function getLeitores() {
-        axios.get("http://localhost:3005/leitores").then((resposta) => {
-            setLeitores(resposta.data);
+  function getLivros() {
+    axios.get("http://localhost:3005/livros").then((resposta) => {
+      setLivros(resposta.data);
+    });
+  }
+
+  useEffect(() => {
+    getLivros();
+    getLeitores();
+  }, []);
+
+  function novoLeitor() {
+    setLeitor({
+      nomeLeitor: "",
+      idadeLeitor: "",
+      livros: [],
+    });
+  }
+
+  function alterarLeitor(campo, valor, id) {
+    leitor[campo] = valor;
+    setLeitor({
+      _id: id,
+      ...leitor,
+    });
+  }
+
+  function excluirLeitor(id) {
+    axios.delete("http://localhost:3005/leitores/" + id).then(() => {
+      reiniciarEstadoDosObjetos();
+    });
+  }
+
+  function salvarLeitor() {
+    if (leitor._id) {
+      axios
+        .put("http://localhost:3005/leitores/" + leitor._id, leitor)
+        .then(() => {
+          reiniciarEstadoDosObjetos();
         });
+    } else {
+      axios.post("http://localhost:3005/leitores/", leitor).then(() => {
+        reiniciarEstadoDosObjetos();
+      });
+    }
+  }
+
+  function getSelectLivros() {
+    if (leitor !== null) {
+      const vetLivros = [];
+      const livrosAntes = [];
+
+      for (let i = 0; i < livros.length; i++) {
+        const livro = livros[i];
+        if (leitor.livros && leitor.livros.includes(livro._id)) {
+          livrosAntes[i] = {
+            value: livro._id,
+            label: livro.titulo,
+          };
+        }
+
+        vetLivros[i] = {
+          value: livro._id,
+          label: livro.titulo,
+        };
+      }
+
+      return (
+        <div>
+          <Select
+            isMulti
+            isClearable={false}
+            value={livrosSelecionados}
+            defaultValue={livrosAntes}
+            onChange={onChangeSelectLivros}
+            options={vetLivros}
+            styles={selectStyles}
+          />
+        </div>
+      );
     }
 
-    function getLivros() {
-        axios.get("http://localhost:3005/livros").then((resposta) => {
-            setLivros(resposta.data);
-        });
-    }
+    return null;
+  }
 
-    useEffect(() => {
-        getLivros();
-        getLeitores();
-    }, [])
-
-    function novoLeitor() {
-        setLeitor({
-            // _id:"",
-            nomeLeitor: "",
-            idadeLeitor: "",
-            livro: [],
-        })
+  function onChangeSelectLivros(valores) {
+    setLivrosSelecionados(valores);
+    const livrosIds = [];
+    for (let i = 0; i < valores.length; i++) {
+      livrosIds[i] = valores[i].value;
     }
-    function alterarLeitor(campo, valor, id) {
-        leitor[campo] = valor;
-        setLeitor({
-            _id: id,
-            ...leitor,
-        });
-    }
+    alterarLeitor("livros", livrosIds, leitor._id);
+  }
 
-    function excluirLeitor(id) {
-        axios.delete("http://localhost:3005/leitores/" + id).then(() => {
+  function getFormulario() {
+    return (
+      <form>
+        <label>Nome Leitor</label>
+        <input
+          type="text"
+          name="nomeLeitor"
+          value={leitor.nomeLeitor}
+          onChange={(e) => {
+            alterarLeitor(e.target.name, e.target.value, leitor._id);
+          }}
+        />
+        <label>Idade do Leitor</label>
+        <input
+          type="number"
+          name="idadeLeitor"
+          value={leitor.idadeLeitor}
+          onChange={(e) => {
+            alterarLeitor(e.target.name, e.target.value, leitor._id);
+          }}
+        />
+        <label>Livro</label>
+        {getSelectLivros()}
+        <button
+          id="butao"
+          type="button"
+          onClick={() => {
+            salvarLeitor();
+          }}
+        >
+          {" "}
+          Salvar leitor{" "}
+        </button>
+
+        <button
+          id="butaoCancela"
+          type="button"
+          onClick={() => {
             reiniciarEstadoDosObjetos();
-        });
-    }
+          }}
+        >
+          Cancelar
+        </button>
+      </form>
+    );
+  }
 
-    function salvarLeitor() {
-        if (leitor._id) {
-            axios.put("http://localhost:3005/leitores/" + leitor._id, leitor).then(() => {
-                reiniciarEstadoDosObjetos();
-            });
-        } else {
-            axios.post("http://localhost:3005/leitores/", leitor).then(() => {
-                reiniciarEstadoDosObjetos();
-            })
-        }
-    }
-
-
-    function getSelectLivros() {
-        if (leitor !== null) {
-            const vetLivros = [];
-            const livrosAntes = [];
-
-            for (let i = 0; i < livros.length; i++) {
-                const livro = livros[i];
-                if (leitor.livros && leitor.livros.includes(livro._id)) {
-                    livrosAntes[i] = {
-                        value: livro._id,
-                        label: livro.titulo,
-                    };
-                }
-
-                vetLivros[i] = {
-                    value: livro._id,
-                    label: livro.titulo,
-                };
-            }
-
-            return (
-                <Select
-                    isMulti
-                    isClearable={false}
-                    value={livrosSelecionados}
-                    defaultValue={livrosAntes}
-                    onChange={onChangeSelectLivros}
-                    options={vetLivros}
-                    styles={selectStyles}
-                />
-            );
-        }
-
-        return null;
-    }
-
-    function onChangeSelectLivros(valores) {
-
-        setLivrosSelecionados(valores);
-        const livrosIds = [];
-        for (let i = 0; i < valores.length; i++) {
-            livrosIds[i] = valores[i].value;
-        }
-        alterarLeitor("livros", livrosIds, leitor._id);
-    }
-
-    function getFormulario() {
-        return (
-            <form>
-                <label>Nome Leitor</label>
-                <input
-                    type="text"
-                    name="nomeLeitor"
-                    value={leitor.nomeLeitor}
-                    onChange={(e) => {
-                        alterarLeitor(e.target.name, e.target.value, leitor._id);
-                    }}
-                />
-                <label>Idade do Leitor</label>
-                <input
-                    type="number"
-                    name="idadeLeitor"
-                    value={leitor.idadeLeitor}
-                    onChange={(e) => {
-                        alterarLeitor(e.target.name, e.target.value, leitor._id);
-                    }}
-                />
-                <label>Livro</label>
-                {getSelectLivros()}
-                <button id="butao" type="button" onClick={() => { salvarLeitor(); }}
-                > Salvar leitor </button>
-
-                <button id="butaoCancela"
-                    type="button"
-                    onClick={() => {
-                        reiniciarEstadoDosObjetos();
-                    }}
-                >Cancelar</button>
-            </form>
-        )
-    }
-
-
-    //geração da tabela
-    function getLinhaDaTabela(leitor, livros) {
-        
-        const livroAssociado = leitor.livros && leitor.livros.length > 0 ? livros.find(livro => leitor.livros.includes(livro._id)) : null;
-        const tituloLivro = livroAssociado ? livroAssociado.titulo : '';
-
-        return (
-            <tr id
-                tr key={leitor._id}>
-                <td id="thtd">{leitor._id}</td>
-                <td id="thtd">{leitor.nomeLeitor}</td>
-                <td id="thtd">
-                    <button id="butaoCancela"
-                        type="button"
-                        onClick={() => {
-                            if (
-                                window.confirm(
-                                    "Confirmar a exclusão do leitor " + leitor.nomeLeitor + "?"
-                                )
-                            ) {
-                                excluirLeitor(leitor._id);
-                            }
-                        }}
-                    >
-                        Deletar
-                    </button>
-                    <button id="butaoEdita"
-                        type="button"
-                        onClick={() => {
-                            setLeitor(leitor);
-                        }}
-                    > Editar
-                    </button>
-                </td>
-                <td>{tituloLivro}</td>
-            </tr>
-        );
-    }
-    function getLinhasDaTabela() {
-        const linhasDaTabela = [];
-        for (let i = 0; i < leitores.length; i++) {
-            const leitor = leitores[i];
-            linhasDaTabela[i] = getLinhaDaTabela(leitor);
-        }
-        return linhasDaTabela;
-    }
-//TABELA PRINCIPAL  
-    function getTabela() {
-        return (
-            <table className="cadastrarLivro">
-                <tbody>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome Leitor</th>
-                        <th>O que deseja fazer?</th>
-                        <th>Livro</th>
-                    </tr>
-                    {getLinhasDaTabela()}
-                </tbody>
-            </table>
-        );
-    }
-
-    function getConteudo() {
-        if (leitor == null) {
-            return (
-                <>
-                    <button id="butaoNovo"
-                        type="button"
-                        onClick={() => {
-                            novoLeitor();
-                        }}
-                    >
-                        Novo leitor
-                    </button>
-                    {getTabela()}
-                </>
-            );
-        } else {
-            return getFormulario();
-        }
-    }
-
+  //geração da tabela
+  function getLinhaDaTabela(leitor, livros) {
+    // const livroAssociado = leitor.livros && leitor.livros.length > 0 ? livros.find(livro => leitor.livros.includes(livro._id)) : null;
+    // const tituloLivro = livroAssociado ? livroAssociado.titulo : '';
 
     return (
-        <div className="cadastroLivro">
-            <Aside />
-            <div className="conteudo">
-                <h2>Cadastro de leitores </h2>
-                {getConteudo()}
-            </div>
-        </div>
+      <tr id tr key={leitor._id}>
+        <td id="thtd">{leitor._id}</td>
+        <td id="thtd">{leitor.nomeLeitor}</td>
+        <td id="thtd">{leitor.idadeLeitor}</td>
+        <td id="thtd">
+          <button
+            id="butaoCancela"
+            type="button"
+            onClick={() => {
+              if (
+                window.confirm(
+                  "Confirmar a exclusão do leitor " + leitor.nomeLeitor + "?"
+                )
+              ) {
+                excluirLeitor(leitor._id);
+              }
+            }}
+          >
+            Deletar
+          </button>
+          <button
+            id="butaoEdita"
+            type="button"
+            onClick={() => {
+              setLeitor(leitor);
+            }}
+          >
+            {" "}
+            Editar
+          </button>
+        </td>
+        {/* <td>{livros._id}</td> */}
+      </tr>
     );
-
-    function reiniciarEstadoDosObjetos() {
-        setLeitor(null);
-        getLeitores();
-        // setLeitorSelecionado(); 
+  }
+  function getLinhasDaTabela() {
+    const linhasDaTabela = [];
+    for (let i = 0; i < leitores.length; i++) {
+      const leitor = leitores[i];
+      linhasDaTabela[i] = getLinhaDaTabela(leitor);
     }
+    return linhasDaTabela;
+  }
+  //TABELA PRINCIPAL
+  function getTabela() {
+    return (
+      <table className="cadastrarLivro">
+        <tbody>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>O que deseja fazer?</th>
+            {/* <th>Livro</th> */}
+          </tr>
+          {getLinhasDaTabela()}
+        </tbody>
+      </table>
+    );
+  }
 
+  function getConteudo() {
+    if (leitor == null) {
+      return (
+        <>
+          <button
+            id="butaoNovo"
+            type="button"
+            onClick={() => {
+              novoLeitor();
+            }}
+          >
+            Novo leitor
+          </button>
+          {getTabela()}
+        </>
+      );
+    } else {
+      return getFormulario();
+    }
+  }
+
+  return (
+    <div className="cadastroLivro">
+      <div className="conteudo">{getConteudo()}</div>
+    </div>
+  );
+
+  function reiniciarEstadoDosObjetos() {
+    setLeitor(null);
+    getLeitores();
+  }
 }
 export default CadastroLeitor;
