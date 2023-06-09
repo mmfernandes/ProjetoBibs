@@ -5,7 +5,7 @@ body, html, #root {
 
 body {
   margin: 0;
-  background-color: #f4f6fa;
+  background-color: #2263e5;
   overflow-y: scroll;
   font-family: "Roboto", sans-serif;
 }
@@ -26,16 +26,9 @@ main {
   min-width: 80vh;
 }
 
-footer {
-  grid-area: footer;
-}
-
 #root {
   min-height: 100vh;
   box-sizing: border-box;
-  background-color: white;
-  border-left: #e1e1e1 1px solid;
-  border-right: #e1e1e1 1px solid;
   font-size: calc(10px + 2vmin);
   text-align: center;
   display: grid;
@@ -43,7 +36,6 @@ footer {
     "header header header" minmax(auto, 15vh)
     "nav nav nav" minmax(auto, 9vh)
     "main main main"
-    "footer footer footer" minmax(auto, 9vh);
 }
 
 #root > * {
@@ -83,11 +75,12 @@ ul li a {
 }
 
 #root > nav > ul li a:hover {
-  color: #2a95f3;
+  color: #539190;
+  font-weight: 600;
 }
 
 #root > nav > ul li a.active {
-  color: #967734;
+  color: #285150;
   font-weight: 600;
 }
 

@@ -3,6 +3,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Select from "react-select";
 
+
+
 const selectStyles = {
   control: (provied, state) => ({
     ...provied,
@@ -74,7 +76,7 @@ function CadastroLeitor() {
     }
   }
 
-  function getSelectLivros() {
+  function  getSelectLivros() {
     if (leitor !== null) {
       const vetLivros = [];
       const livrosAntes = [];
@@ -151,11 +153,9 @@ function CadastroLeitor() {
             salvarLeitor();
           }}
         >
-          {" "}
-          Salvar leitor{" "}
+          Salvar
         </button>
-
-        <button
+        <button 
           id="butaoCancela"
           type="button"
           onClick={() => {
@@ -178,7 +178,18 @@ function CadastroLeitor() {
         <td id="thtd">{leitor._id}</td>
         <td id="thtd">{leitor.nomeLeitor}</td>
         <td id="thtd">{leitor.idadeLeitor}</td>
+        <td>{leitor.livros}</td>
         <td id="thtd">
+        <button
+            id="butaoEdita"
+            type="button"
+            onClick={() => {
+              setLeitor(leitor);
+            }}
+          >
+            {" "}
+            Editar
+          </button>
           <button
             id="butaoCancela"
             type="button"
@@ -194,16 +205,7 @@ function CadastroLeitor() {
           >
             Deletar
           </button>
-          <button
-            id="butaoEdita"
-            type="button"
-            onClick={() => {
-              setLeitor(leitor);
-            }}
-          >
-            {" "}
-            Editar
-          </button>
+          
         </td>
         {/* <td>{livros._id}</td> */}
       </tr>
@@ -226,6 +228,7 @@ function CadastroLeitor() {
             <th>ID</th>
             <th>Nome</th>
             <th>Idade</th>
+            <th>Livros</th>
             <th>O que deseja fazer?</th>
             {/* <th>Livro</th> */}
           </tr>
@@ -246,7 +249,7 @@ function CadastroLeitor() {
               novoLeitor();
             }}
           >
-            Novo leitor
+            Novo
           </button>
           {getTabela()}
         </>

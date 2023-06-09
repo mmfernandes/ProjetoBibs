@@ -1,6 +1,7 @@
-import "./cadastroLivro.css";
+import "./cadastro.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import Select from "react-select";
 
 //select chips
 const selectStyles = {
@@ -16,8 +17,8 @@ const selectStyles = {
 };
 
 function CadastroLivro() {
-  const [leitores, setLeitores] = useState([]);
-  const [leitoresSelecionados, setLivrosSelecionados] = useState();
+  const [autores, setAutores] = useState([]);
+  const [autoresSelecionados, setAutoresSelecionados] = useState();
   const [livro, setLivro] = useState(null);
   const [livros, setLivros] = useState([]);
 
@@ -27,17 +28,23 @@ function CadastroLivro() {
       setLivros(resposta.data);
     });
   }
+  function getAutores() {
+    axios.get("http://localhost:3005/autores").then((resposta) => {
+      setAutores(resposta.data);
+    });
+  }
 
+  //  buscar dados, atualizar o estado, entre outras ações
+  // chamando as funções async.
+  // [] como o segundo argumento indicando que esse efeito deve ser executado apenas uma vez, após a montagem inicial do componente
   useEffect(() => {
     getLivros();
-    //  buscar dados, atualizar o estado, entre outras ações
-    // chamando as funções async.
-    // [] como o segundo argumento indicando que esse efeito deve ser executado apenas uma vez, após a montagem inicial do componente.
+    getAutores();
   }, []);
 
   function novoLivro() {
     setLivro({
-      autor: "",
+      autores: [],
       titulo: "",
       npaginas: "",
       editora: "",
@@ -70,18 +77,62 @@ function CadastroLivro() {
     }
   }
 
+  function getSelectAutores() {
+    if (livro !== null) {
+      const vetAutores = [];
+      const autoresAnteriores = [];
+      for (let i = 0; i < autores.length; i++) {
+        const autor = autores[i];
+        if (livro.autores.includes(autor._id)) {
+          autoresAnteriores[i] = {
+            value: autor._id,
+            label: autor.nome,
+          };
+        }
+        vetAutores[i] = {
+          value: autor._id,
+          label: autor.nome,
+        };
+      }
+
+      return (
+        <Select
+          isMulti
+          isClearable={false}
+          value={autoresSelecionados}
+          defaultValue={autoresAnteriores}
+          onChange={onChangeSelectAutores}
+          options={vetAutores}
+          styles={selectStyles}
+        />
+      );
+    }
+  }
+
+  function onChangeSelectAutores(valores) {
+    setAutoresSelecionados(valores);
+    const autoresIds = [];
+    for (let i = 0; i < valores.length; i++) {
+      autoresIds[i] = valores[i].value;
+    }
+    alterarLivro("autores", autoresIds, livro._id);
+  }
+
   function getFormulario() {
     return (
       <form>
         <label>Autor</label>
-        <input
-          type="text"
-          name="autor"
-          value={livro.autor}
-          onChange={(e) => {
-            alterarLivro(e.target.name, e.target.value, livro._id);
-          }}
-        />
+        {getSelectAutores()}
+
+        {/* <input
+            type="text"
+            name="autor"
+            value={livro.autor} 
+            
+            onChange={(e) => {
+              alterarLivro(e.target.name, e.target.value, livro._id);
+            }}
+          /> BOX QUE ESCREVIA O NOME DO AUTOR*/}
         <label>Título</label>
         <input
           type="text"
@@ -116,8 +167,7 @@ function CadastroLivro() {
             salvarLivro();
           }}
         >
-          {" "}
-          Salvar livro{" "}
+          Salvar
         </button>
         <button
           id="butaoCancela"
@@ -133,11 +183,11 @@ function CadastroLivro() {
   }
 
   //geração da tabela
-  function getLinhaDaTabela(livro) {
+  function getLinhaDaTabela(livro, autor) {
     return (
       <tr id tr key={livro._id}>
         <td id="thtd">{livro._id}</td>
-        <td id="thtd">{livro.autor}</td>
+        <td id="thtd">{livro.autores}</td>
         <td id="thtd">{livro.titulo}</td>
         <td id="thtd">{livro.npaginas}</td>
         <td id="thtd">{livro.editora}</td>
@@ -209,7 +259,7 @@ function CadastroLivro() {
               novoLivro();
             }}
           >
-            Novo livro
+            Novo
           </button>
           {getTabela()}
         </>
@@ -229,6 +279,6 @@ function CadastroLivro() {
     setLivro(null);
     getLivros();
   }
-}
+} //FIM FUNCAO
 
 export default CadastroLivro;

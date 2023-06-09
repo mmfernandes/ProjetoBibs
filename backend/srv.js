@@ -14,7 +14,7 @@ const leitorRouter = require('./router/leitorRouter')
 srv.use('/leitores', leitorRouter);
 
 const autorRouter = require('./router/autorRouter')
-srv.use('/autor', autorRouter);
+srv.use('/autores', autorRouter);
 
 srv.listen(3005, 
     function() {

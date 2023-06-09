@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
   const LivroSchema = new mongoose.Schema({
     _id: { type: Number, required: true, default: -1 },
-    autor: String,
+    autores : [{ type: Number, ref: 'autor' }],
     titulo: {type: String, required: [true, "nome é obrigatório"]},
     npaginas: { type: Number, required: true },
     editora: { type: String, required: true },

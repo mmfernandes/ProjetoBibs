@@ -1,0 +1,144 @@
+#root > main > div.cadastrarLivro {
+  .tabela {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .tabela th, .tabela td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .tabela th {
+    background-color: #f2f2f2;
+  }
+  
+  .tabela tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .tabela tr:hover {
+    background-color: #e9e9e9;
+  }
+}
+
+
+
+/* ESTRUTURA DA PÁGINA */
+#root > main > div.cadastroLivro {
+  display: flex;
+  margin: 20px 50px 20px 20px;
+}
+
+#root > main > div > div.conteudo {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+#root > main > div > div > h3 {
+  padding: 0 3px;
+}
+
+#root > main > div > div > button {
+  width: 135px;
+  padding: 5px;
+  margin: 10px 0;
+  display: inline-block;
+  background-color: rgb(8, 161, 11);
+  color: white; 
+}
+
+#butaoCancela {
+  background-color: lightcoral; 
+  border-radius: 12px;
+  border: none;
+  color: white;
+  padding: 15px 40px;
+  padding: 15px 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  
+}
+
+#butaoNovo {
+  background-color: rgb(46, 207, 37); 
+  border-radius: 12px;
+  border: none;
+  color: black;
+  padding: 15px 4px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+}
+
+#butaoEdita {
+  background-color: rgb(37, 137, 225); 
+  border-radius: 12px;
+  border: none;
+  color: white;
+  padding: 15px 40px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  
+}
+
+#butao {
+  background-color: #088144; /* Green */
+  border-radius: 12px;
+  border: none;
+  color: white;
+  padding: 15px 4px;
+  text-align: AUTO  ;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+input[type="text"] {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+label,
+fieldset {
+  margin-top: 10px;
+}
+
+form > button {
+  width: 100px;
+  margin: 20px 10px 20px 0;
+  display: inline-block;
+}
+
+main > div > button {
+  width: 100px;
+  margin: 10px 0 20px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+/* TABELA */
+table,
+tbody,
+th,
+td {
+  border-collapse: collapse;
+  border: 2px solid #000000;
+  font-size: large;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+table > tbody > tr > th,
+table > tbody > tr > td {
+  padding: 3px !important;
+}
