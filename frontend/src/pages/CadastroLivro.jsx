@@ -181,13 +181,17 @@ function CadastroLivro() {
       </form>
     );
   }
-
+  function adicionarVirgula() {
+    var cell = document.getElementById("celda");
+    var cellValue = cell.innerHTML;
+    cell.innerHTML = cellValue + ",";
+  }
   //geração da tabela
   function getLinhaDaTabela(livro, autor) {
     return (
       <tr id tr key={livro._id}>
         <td id="thtd">{livro._id}</td>
-        <td id="thtd">{livro.autores}</td>
+        <td id="celda">{livro.autores}</td>
         <td id="thtd">{livro.titulo}</td>
         <td id="thtd">{livro.npaginas}</td>
         <td id="thtd">{livro.editora}</td>

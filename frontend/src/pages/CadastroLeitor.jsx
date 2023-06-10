@@ -75,7 +75,6 @@ function CadastroLeitor() {
       });
     }
   }
-
   function  getSelectLivros() {
     if (leitor !== null) {
       const vetLivros = [];
@@ -178,7 +177,7 @@ function CadastroLeitor() {
         <td id="thtd">{leitor._id}</td>
         <td id="thtd">{leitor.nomeLeitor}</td>
         <td id="thtd">{leitor.idadeLeitor}</td>
-        <td>{leitor.livros}</td>
+        <td id="thtd">{leitor.livros + ","}</td> 
         <td id="thtd">
         <button
             id="butaoEdita"

@@ -187,7 +187,7 @@ function CadastroAutor() {
         <td id="thtd">{autor.nome}</td>
         <td id="thtd">{autor.email}</td>
         <td id="thtd">{autor.cpf}</td>
-        <td id="thtd">{autor.livros}</td>
+        <td id="celda">{autor.livros + ","}</td> 
         <td id="thtd">
          
           <button
